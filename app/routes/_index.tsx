@@ -1,7 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { db } from "../db.server";
 import { user } from "src/schema";
-import { Form, json, useActionData } from "@remix-run/react";
+import { Form, json, useActionData, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -27,21 +27,44 @@ export const action = async () => {
       name: user.name,
     });
 
-  return json({ message: "User added", createdUser: resp[0] });
+  return json({
+    message: "The following user was added successfully",
+    createdUser: resp[0],
+  });
+};
+
+export const loader = async () => {
+  const users = await db.query.user.findMany();
+
+  return json({ users: users || [] });
 };
 
 export default function Index() {
   const actionData = useActionData<typeof action>();
+  const loaderData = useLoaderData<typeof loader>();
 
   return (
-    <div className="font-sans p-4">
+    <div className="font-sans p-4 flex flex-col gap-3">
+      <h1 className="text-2xl font-semibold">
+        Hello Remix, Drizzle, Postgresql
+      </h1>
+
+      {/* Add User */}
+
       <Form method="post">
-        <button type="submit">add user</button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          type="submit"
+        >
+          add user
+        </button>
       </Form>
-      {actionData && <p>{actionData.message}</p>}
+      {actionData && (
+        <p className="text-green-600 font-semibold">{actionData.message}</p>
+      )}
 
       {actionData && (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col gap-2">
           <div>
             <span className="font-semibold">ID:</span>{" "}
             {actionData.createdUser.id}
@@ -52,6 +75,23 @@ export default function Index() {
           </div>
         </div>
       )}
+
+      {/* Users List */}
+
+      {/* To nuke users */}
+      {/* DELETE FROM project1_user; */}
+
+      <div className="mt-4">
+        <h2 className="font-semibold">Users List</h2>
+        <ul>
+          {loaderData.users.map((user) => (
+            <li key={user.id}>
+              <span className="font-semibold">ID:</span> {user.id} -{" "}
+              <span className="font-semibold">Name:</span> {user.name}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
