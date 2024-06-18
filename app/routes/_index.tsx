@@ -1,4 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
+import { db } from "../db.server";
+import { user } from "src/schema";
+import { Form, json, useActionData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,42 +10,48 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export const action = async () => {
+  const randomEmailStringPrefix = Math.random().toString(36).substring(7);
+  const randomNameString = Math.random().toString(36).substring(7);
+
+  const resp = await db
+    .insert(user)
+    .values({
+      name: randomNameString,
+      email: `${randomEmailStringPrefix}@example.com`.toLowerCase(),
+      password: "password",
+      role: "admin",
+    })
+    .returning({
+      id: user.id,
+      name: user.name,
+    });
+
+  return json({ message: "User added", createdUser: resp[0] });
+};
+
 export default function Index() {
+  const actionData = useActionData<typeof action>();
+
   return (
     <div className="font-sans p-4">
-      <h1 className="text-3xl">Welcome to Remix</h1>
-      <ul className="list-disc mt-4 pl-6 space-y-2">
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/quickstart"
-            rel="noreferrer"
-          >
-            5m Quick Start
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/tutorial"
-            rel="noreferrer"
-          >
-            30m Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/docs"
-            rel="noreferrer"
-          >
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+      <Form method="post">
+        <button type="submit">add user</button>
+      </Form>
+      {actionData && <p>{actionData.message}</p>}
+
+      {actionData && (
+        <div className="flex flex-col items-center gap-2">
+          <div>
+            <span className="font-semibold">ID:</span>{" "}
+            {actionData.createdUser.id}
+          </div>
+          <div>
+            <span className="font-semibold">Name:</span>{" "}
+            {actionData.createdUser.name}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
