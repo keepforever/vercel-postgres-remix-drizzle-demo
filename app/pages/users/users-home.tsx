@@ -1,5 +1,6 @@
 import { Link, json, useLoaderData } from "@remix-run/react";
 import { db } from "~/db.server";
+import { useUserLayoutData } from "~/pages/users/hooks";
 
 export const loader = async () => {
   const users = await db.query.user.findMany();
@@ -9,6 +10,7 @@ export const loader = async () => {
 
 export default function UsersHome() {
   const loaderData = useLoaderData<typeof loader>();
+  const slashUsersMatch = useUserLayoutData();
 
   return (
     <div className="p-6 flex">
@@ -35,6 +37,17 @@ export default function UsersHome() {
             ))}
           </ul>
         </div>
+
+        <h3 className="mt-4 font-semibold">Loader Data From Parent Route</h3>
+        <p>
+          Could have been any parent or child route that was matched on the
+          page, but, I targeted
+          <code>/users</code> in this case.
+        </p>
+
+        <pre>
+          {JSON.stringify(slashUsersMatch, null, 2) || "nothing to preview"}
+        </pre>
       </div>
     </div>
   );

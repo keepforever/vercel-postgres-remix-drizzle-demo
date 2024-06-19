@@ -1,4 +1,9 @@
-import { Outlet } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { Outlet, json } from "@remix-run/react";
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  return json({ myDataFromUsersLayout: request.url });
+};
 
 export default function UsersLayout() {
   return (
