@@ -17,3 +17,7 @@ export const getUser = async (id: number) => {
     where: eq(user.id, id),
   });
 };
+
+export const deleteUser = async (id: number) => {
+  return await db.delete(user).where(eq(user.id, id));
+};
