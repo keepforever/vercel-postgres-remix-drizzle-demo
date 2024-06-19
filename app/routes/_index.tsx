@@ -1,7 +1,13 @@
 import type { MetaFunction } from "@remix-run/node";
 import { db } from "../db.server";
 import { user } from "src/schema";
-import { Form, json, useActionData, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  json,
+  useActionData,
+  useLoaderData,
+} from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -48,29 +54,44 @@ export default function Index() {
       <h1 className="text-2xl font-semibold">
         Hello Remix, Drizzle, Postgresql
       </h1>
-      {/* Throw sentry error */}
-      <button
-        type="button"
-        onClick={() => {
-          throw new Error("Some Custom Message");
-        }}
-      >
-        Throw error
-      </button>
+
+      {/* Throw client sentry error */}
+
+      <div className="flex items-center gap-2 flex-wrap">
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          type="button"
+          onClick={() => {
+            throw new Error("Some Custom Message");
+          }}
+        >
+          Throw Client Side Error
+        </button>
+      </div>
+
+      <div className="flex items-center gap-2 flex-wrap">
+        <Link to="/test-error">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Test Serverside Error in Loader
+          </button>
+        </Link>
+      </div>
 
       {/* Add User */}
 
       <Form method="post">
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           type="submit"
         >
-          add user
+          Add User
         </button>
       </Form>
+
       {actionData && (
         <p className="text-green-600 font-semibold">{actionData.message}</p>
       )}
+
       {actionData && (
         <div className="flex flex-col gap-2">
           <div>
