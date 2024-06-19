@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
+import { Link, json, useLoaderData } from "@remix-run/react";
 import { ChildWantingLoaderData } from "~/components/child-wanting-loader-data";
 import { getUser } from "~/utils/user.server";
 
@@ -33,6 +33,10 @@ export default function User() {
         Child Component accessing the Loader Data from the Parent layout
         Route&apos;s loader
       </h3>
+
+      <Link className="text-blue-500 underline text-2xl" to="posts">
+        View Posts
+      </Link>
 
       <ChildWantingLoaderData />
     </div>

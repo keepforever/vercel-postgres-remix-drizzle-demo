@@ -18,7 +18,15 @@ export default defineConfig({
           route("defer-example", "pages/defer-example.tsx");
           route("users", "pages/users/users-layout.tsx", () => {
             route("", "pages/users/users-home.tsx", { index: true });
-            route(":userId", "pages/users/$userId.tsx");
+            route(":userId", "pages/users/$userId.tsx", () => {
+              route("posts", "pages/users/posts/posts-layout.tsx", () => {
+                route("", "pages/users/posts/posts-home.tsx", { index: true });
+                route("new", "pages/users/posts/posts-new.tsx");
+                route(":postId", "pages/users/posts/$postId.tsx", () => {
+                  route("edit", "pages/users/posts/posts-edit.tsx");
+                });
+              });
+            });
           });
         });
       },
