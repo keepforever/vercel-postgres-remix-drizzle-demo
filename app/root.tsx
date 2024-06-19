@@ -25,6 +25,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Link className="ml-2 text-blue-500 underline" to="/">
             Link to Home
           </Link>
+          <Link className="ml-2 text-blue-500 underline" to="/defer-example">
+            Defer Example
+          </Link>
         </div>
 
         {children}
