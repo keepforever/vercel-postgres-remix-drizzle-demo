@@ -48,6 +48,15 @@ export default function Index() {
       <h1 className="text-2xl font-semibold">
         Hello Remix, Drizzle, Postgresql
       </h1>
+      {/* Throw sentry error */}
+      <button
+        type="button"
+        onClick={() => {
+          throw new Error("Some Custom Message");
+        }}
+      >
+        Throw error
+      </button>
 
       {/* Add User */}
 
@@ -62,7 +71,6 @@ export default function Index() {
       {actionData && (
         <p className="text-green-600 font-semibold">{actionData.message}</p>
       )}
-
       {actionData && (
         <div className="flex flex-col gap-2">
           <div>
@@ -75,12 +83,9 @@ export default function Index() {
           </div>
         </div>
       )}
-
       {/* Users List */}
-
       {/* To nuke users */}
       {/* DELETE FROM project1_user; */}
-
       <div className="mt-4">
         <h2 className="font-semibold">Users List</h2>
         <ul>

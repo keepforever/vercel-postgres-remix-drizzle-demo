@@ -16,6 +16,8 @@
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
+    "@sentry/remix": "^8.9.2",
+    "@sentry/vite-plugin": "^2.18.0",
     "@vercel/postgres": "^0.8.0",
     "drizzle-orm": "^0.31.2",
     "isbot": "^4.1.0",
