@@ -72,6 +72,14 @@ export default function Index() {
         Hello Remix, Drizzle, Postgresql
       </h1>
 
+      {/* Navbar */}
+
+      <nav className="flex items-center gap-2">
+        <Link className="text-blue-500 underline" to="/users">
+          Users
+        </Link>
+      </nav>
+
       {/* Throw client sentry error */}
 
       <div className="flex items-center gap-2 flex-wrap">
@@ -89,7 +97,7 @@ export default function Index() {
       <div className="flex items-center gap-2 flex-wrap">
         <Link to="/test-error">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Test Serverside Error in Loader
+            Link to /test-error
           </button>
         </Link>
       </div>
@@ -126,7 +134,7 @@ export default function Index() {
               <span className="font-semibold">Name:</span> {user.name}
               <Link
                 className="ml-2 text-blue-500 underline"
-                to={`/user/${user.id}`}
+                to={`/users/${user.id}`}
               >
                 Visit
               </Link>

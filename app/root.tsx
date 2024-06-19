@@ -20,6 +20,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <div className="flex text-xl font-medium text-black bg-green-300 px-3 py-1">
+          Root Navbar, all pages have this
+          <Link className="ml-2 text-blue-500 underline" to="/">
+            Link to Home
+          </Link>
+        </div>
+
         {children}
         <ScrollRestoration />
         <Scripts />

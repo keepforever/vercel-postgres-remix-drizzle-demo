@@ -11,6 +11,16 @@ export default defineConfig({
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
       },
+      routes(defineRoutes) {
+        return defineRoutes((route) => {
+          route("/", "pages/home.tsx", { index: true });
+          route("test-error", "pages/test-error.tsx");
+          route("users", "pages/users/users-layout.tsx", () => {
+            route("", "pages/users/users-home.tsx", { index: true });
+            route(":userId", "pages/users/$userId.tsx");
+          });
+        });
+      },
     }),
     tsconfigPaths(),
     sentryVitePlugin({

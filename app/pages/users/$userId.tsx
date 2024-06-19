@@ -15,15 +15,15 @@ export default function User() {
   if (!user) return null;
 
   return (
-    <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
-      <div>
+    <div className="p-6 flex">
+      <div className="bg-slate-200 p-2 rounded-md shadow-md">
         <div className="text-xl font-medium text-black">User</div>
-        <p className="text-gray-500">ID: {user.id}</p>
-        <p className="text-gray-500">Name: {user.name}</p>
-        <p className="text-gray-500">Email: {user.email}</p>
-        <p className="text-gray-500">Role: {user.role}</p>
-        <p className="text-gray-500">Created At: {user.createdAt}</p>
-        <p className="text-gray-500">Updated At: {user.updatedAt}</p>
+        <p className="">ID: {user.id}</p>
+        <p className="">Name: {user.name}</p>
+        <p className="">Email: {user.email}</p>
+        <p className="">Role: {user.role}</p>
+        <p className="">Created At: {user.createdAt}</p>
+        <p className="">Updated At: {user.updatedAt}</p>
       </div>
     </div>
   );
