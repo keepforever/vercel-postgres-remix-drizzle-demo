@@ -52,7 +52,7 @@ export const loader = async () => {
 
   return defer({
     widget1: widget1Promise,
-    widget2: widget2Promise,
+    widget2: widget2Promise, // Note, if you await widget2Promise <SuspenseWithAwait> will not work/not be necessary
     widget3: widget3Promise,
     notDeferredData: {
       title: "Not Deferred Data",
