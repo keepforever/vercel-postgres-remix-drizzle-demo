@@ -43,12 +43,6 @@ const navigation = [
   { name: "Users", href: "/users", icon: HomeIcon },
 ];
 
-const teams = [
-  { id: 1, name: "Heroicons", href: "#", initial: "H" },
-  { id: 2, name: "Tailwind Labs", href: "#", initial: "T" },
-  { id: 3, name: "Workcation", href: "#", initial: "W" },
-];
-
 const userNavigation = [
   { name: "Your profile", href: "#" },
   { name: "Sign out", href: "#" },
