@@ -9,6 +9,7 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import "./tailwind.css";
+import { AppShell } from "./components/app-shell";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,17 +21,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div className="flex text-xl font-medium text-black bg-green-300 px-3 py-1">
-          Root Navbar, all pages have this
-          <Link className="ml-2 text-blue-500 underline" to="/">
-            Link to Home
-          </Link>
-          <Link className="ml-2 text-blue-500 underline" to="/defer-example">
-            Defer Example
-          </Link>
-        </div>
-
-        {children}
+        <AppShell>{children}</AppShell>
         <ScrollRestoration />
         <Scripts />
       </body>
