@@ -15,7 +15,9 @@ export default function UsersHome() {
           Users Home; rendered into the Outlet of <code>users-layout.tsx</code>
         </div>
 
-        <h3>Select a user to view their details</h3>
+        <h3 className="mt-4 font-semibold text-2xl">
+          Select a user to view their details
+        </h3>
       </div>
     </div>
   );
