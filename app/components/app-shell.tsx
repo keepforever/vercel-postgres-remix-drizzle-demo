@@ -14,33 +14,41 @@ import {
 import {
   Bars3Icon,
   BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
   Cog6ToothIcon,
-  DocumentDuplicateIcon,
   FolderIcon,
   HomeIcon,
-  UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
+import { NavLink } from "@remix-run/react";
+
+// const DUMMY_USER_ID = "dummyUserId";
+// const DUMMY_POST_ID = "dummyPostId";
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
-  { name: "Projects", href: "#", icon: FolderIcon, current: false },
-  { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-  { name: "Documents", href: "#", icon: DocumentDuplicateIcon, current: false },
-  { name: "Reports", href: "#", icon: ChartPieIcon, current: false },
+  { name: "Home", href: "/", icon: HomeIcon },
+  {
+    name: "This Route will crash the app",
+    href: "/test-error",
+    icon: FolderIcon,
+  },
+  {
+    name: "Defer Example",
+    href: "/defer-example",
+    icon: FolderIcon,
+  },
+  { name: "Users", href: "/users", icon: HomeIcon },
 ];
+
 const teams = [
-  { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
-  { id: 2, name: "Tailwind Labs", href: "#", initial: "T", current: false },
-  { id: 3, name: "Workcation", href: "#", initial: "W", current: false },
+  { id: 1, name: "Heroicons", href: "#", initial: "H" },
+  { id: 2, name: "Tailwind Labs", href: "#", initial: "T" },
+  { id: 3, name: "Workcation", href: "#", initial: "W" },
 ];
+
 const userNavigation = [
   { name: "Your profile", href: "#" },
   { name: "Sign out", href: "#" },
@@ -55,14 +63,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Transition show={sidebarOpen}>
           <Dialog className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -112,11 +112,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
                     <div className="flex h-16 shrink-0 items-center">
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                        alt="Your Company"
-                      />
+                      <NavLink to="/">
+                        <img
+                          className="h-8 w-auto"
+                          src="https://tailwindui.com/img/logos/mark.svg?color=white"
+                          alt="Your Company"
+                        />
+                      </NavLink>
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul className="flex flex-1 flex-col gap-y-7">
@@ -124,26 +126,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                           <ul className="-mx-2 space-y-1">
                             {navigation.map((item) => (
                               <li key={item.name}>
-                                <a
-                                  href={item.href}
-                                  className={classNames(
-                                    item.current
-                                      ? "bg-indigo-700 text-white"
-                                      : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
-                                  )}
+                                <NavLink
+                                  to={item.href}
+                                  className={({ isActive }) => {
+                                    return classNames(
+                                      isActive
+                                        ? "bg-indigo-700 text-white"
+                                        : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
+                                      "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                                    );
+                                  }}
                                 >
                                   <item.icon
-                                    className={classNames(
-                                      item.current
-                                        ? "text-white"
-                                        : "text-indigo-200 group-hover:text-white",
-                                      "h-6 w-6 shrink-0"
-                                    )}
+                                    className={classNames("h-6 w-6 shrink-0")}
                                     aria-hidden="true"
                                   />
                                   {item.name}
-                                </a>
+                                </NavLink>
                               </li>
                             ))}
                           </ul>
@@ -155,27 +154,30 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                           <ul role="list" className="-mx-2 mt-2 space-y-1">
                             {teams.map((team) => (
                               <li key={team.name}>
-                                <a
-                                  href={team.href}
-                                  className={classNames(
-                                    team.current
-                                      ? "bg-indigo-700 text-white"
-                                      : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
-                                  )}
+                                <NavLink
+                                  to={team.href}
+                                  className={({ isActive }) => {
+                                    return classNames(
+                                      isActive
+                                        ? "bg-indigo-700 text-white"
+                                        : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
+                                      "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                                    );
+                                  }}
                                 >
                                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">
                                     {team.initial}
                                   </span>
                                   <span className="truncate">{team.name}</span>
-                                </a>
+                                </NavLink>
+                                ```
                               </li>
                             ))}
                           </ul>
                         </li>
                         <li className="mt-auto">
-                          <a
-                            href="#"
+                          <NavLink
+                            to="#"
                             className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
                           >
                             <Cog6ToothIcon
@@ -183,7 +185,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                               aria-hidden="true"
                             />
                             Settings
-                          </a>
+                          </NavLink>
                         </li>
                       </ul>
                     </nav>
@@ -211,26 +213,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className={classNames(
-                            item.current
-                              ? "bg-indigo-700 text-white"
-                              : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
-                            "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
-                          )}
+                        <NavLink
+                          to={item.href}
+                          className={({ isActive }) => {
+                            return classNames(
+                              isActive
+                                ? "bg-indigo-700 text-white"
+                                : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
+                              "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                            );
+                          }}
                         >
                           <item.icon
-                            className={classNames(
-                              item.current
-                                ? "text-white"
-                                : "text-indigo-200 group-hover:text-white",
-                              "h-6 w-6 shrink-0"
-                            )}
+                            className={classNames("h-6 w-6 shrink-0")}
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </NavLink>
                       </li>
                     ))}
                   </ul>
@@ -242,27 +241,29 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
                       <li key={team.name}>
-                        <a
-                          href={team.href}
-                          className={classNames(
-                            team.current
-                              ? "bg-indigo-700 text-white"
-                              : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
-                            "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
-                          )}
+                        <NavLink
+                          to={team.href}
+                          className={({ isActive }) => {
+                            return classNames(
+                              isActive
+                                ? "bg-indigo-700 text-white"
+                                : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
+                              "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                            );
+                          }}
                         >
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">
                             {team.initial}
                           </span>
                           <span className="truncate">{team.name}</span>
-                        </a>
+                        </NavLink>
                       </li>
                     ))}
                   </ul>
                 </li>
                 <li className="mt-auto">
-                  <a
-                    href="#"
+                  <NavLink
+                    to="#"
                     className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
                   >
                     <Cog6ToothIcon
@@ -270,7 +271,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       aria-hidden="true"
                     />
                     Settings
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </nav>
@@ -360,15 +361,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       {userNavigation.map((item) => (
                         <MenuItem key={item.name}>
                           {({ focus }) => (
-                            <a
-                              href={item.href}
+                            <NavLink
+                              to={item.href}
                               className={classNames(
                                 focus ? "bg-gray-50" : "",
                                 "block px-3 py-1 text-sm leading-6 text-gray-900"
                               )}
                             >
                               {item.name}
-                            </a>
+                            </NavLink>
                           )}
                         </MenuItem>
                       ))}
