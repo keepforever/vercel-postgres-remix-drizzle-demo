@@ -8,6 +8,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import { deleteUser, insertUser } from "~/utils/user.server";
+import { faker } from "@faker-js/faker";
 
 export const meta: MetaFunction = () => {
   return [
@@ -15,6 +16,15 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
+
+export function getNewUserPayload() {
+  return {
+    name: faker.person.fullName(),
+    email: faker.internet.email().toLowerCase(),
+    password: faker.internet.password(),
+    role: faker.helpers.arrayElement(["admin", "customer"]),
+  };
+}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -55,16 +65,8 @@ export default function Index() {
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
 
-  /* dummy data */
-  const randomEmailStringPrefix = Math.random().toString(36).substring(7);
-  const randomNameString = Math.random().toString(36).substring(7);
-
-  const newUserPayload = {
-    name: randomNameString,
-    email: `${randomEmailStringPrefix}@example.com`.toLowerCase(),
-    password: "password",
-    role: "admin",
-  };
+  /* faker data */
+  const newUserPayload = getNewUserPayload();
 
   return (
     <div className="font-sans p-4 flex flex-col gap-3">

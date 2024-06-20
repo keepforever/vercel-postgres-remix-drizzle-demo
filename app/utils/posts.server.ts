@@ -1,4 +1,4 @@
-import { posts } from "src/schema";
+import { posts, user } from "src/schema";
 import { db } from "~/db.server";
 import { eq } from "drizzle-orm";
 
@@ -42,4 +42,16 @@ export const getPostById = async (id: number) => {
   return await db.query.posts.findFirst({
     where: eq(posts.id, id),
   });
+};
+
+// example for left join
+// const result = await db.select().from(users).leftJoin(pets, eq(users.id, pets.ownerId))
+
+// left join with posts and authors
+export const getPostWithAuthor = async (id: number) => {
+  return await db
+    .select()
+    .from(posts)
+    .leftJoin(user, eq(posts.authorId, user.id))
+    .where(eq(posts.id, id));
 };

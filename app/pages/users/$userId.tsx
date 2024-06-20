@@ -1,6 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Link, Outlet, json, useLoaderData } from "@remix-run/react";
-import { ChildWantingLoaderData } from "~/components/child-wanting-loader-data";
 import { getUser } from "~/utils/user.server";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -38,7 +37,7 @@ export default function User() {
         View Posts
       </Link>
 
-      <ChildWantingLoaderData />
+      {/* <ChildWantingLoaderData /> */}
 
       <h1 className="text-xl font-medium text-black bg-orange-300 px-3 py-1 mt-6">
         $userId, Outlet below

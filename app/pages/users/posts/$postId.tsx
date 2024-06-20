@@ -1,53 +1,61 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getPostById } from "~/utils/posts.server";
+import { getPostById, getPostWithAuthor } from "~/utils/posts.server";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const postId = params.postId as string;
   const post = await getPostById(Number(postId));
+  const postWithAuthor = await getPostWithAuthor(Number(postId));
 
   if (!post) {
     throw new Error("Post not found");
   }
 
-  return json({ post });
+  return json({ post, postWithAuthor });
 };
 
 export default function User() {
   const data = useLoaderData<typeof loader>();
+  const postWithAuthor = data.postWithAuthor?.[0];
 
   return (
     <div className="p-6 flex flex-col justify-center bg-gray-100">
       <h1 className="text-2xl font-bold mb-6">Post Details</h1>
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <div className="mb-4">
-          <div className="text-gray-700 font-bold mb-2">Post Name</div>
-          <div className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100">
-            {data.post.name}
-          </div>
-        </div>
-        <div className="mb-4">
-          <div className="text-gray-700 font-bold mb-2">Author ID</div>
-          <div className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100">
-            {data.post.authorId}
-          </div>
-        </div>
-        <div className="mb-4">
-          <div className="text-gray-700 font-bold mb-2">Created At</div>
-          <div className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100">
-            {new Date(data.post.createdAt).toLocaleString()}
-          </div>
-        </div>
-
+      <h2 className="text-xl font-bold mb-4">Post without join</h2>
+      <ul className="bg-white p-8 rounded-lg shadow-md w-full max-w-md list-disc list-inside">
+        <li>
+          <strong>Post Name:</strong> {data.post.name}
+        </li>
+        <li>
+          <strong>Author ID:</strong> {data.post.authorId}
+        </li>
+        <li>
+          <strong>Created At:</strong>{" "}
+          {new Date(data.post.createdAt).toLocaleString()}
+        </li>
         {data.post.updatedAt && (
-          <div className="mb-4">
-            <div className="text-gray-700 font-bold mb-2">Updated At</div>
-            <div className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100">
-              {new Date(data?.post?.updatedAt).toLocaleString()}
-            </div>
-          </div>
+          <li>
+            <strong>Updated At:</strong>{" "}
+            {new Date(data?.post?.updatedAt).toLocaleString()}
+          </li>
         )}
-      </div>
+      </ul>
+
+      <h2 className="text-xl font-bold mt-8 mb-4">Post with join</h2>
+
+      <ul className="bg-white p-8 rounded-lg shadow-md w-full max-w-md list-disc list-inside">
+        <li>
+          {postWithAuthor.post.name} by {postWithAuthor.user?.name}
+        </li>
+      </ul>
+
+      <h2 className="text-xl font-bold mt-8 mb-4">
+        Preview of getPostWithAuthor
+      </h2>
+
+      <pre>
+        {JSON.stringify(data.postWithAuthor, null, 2) || "nothing to preview"}
+      </pre>
     </div>
   );
 }

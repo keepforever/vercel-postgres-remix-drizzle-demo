@@ -1,5 +1,6 @@
 import { defer, useLoaderData } from "@remix-run/react";
 import { SuspenseWithAwait } from "~/components/suspense-with-await";
+import { faker } from "@faker-js/faker";
 
 type WidgetData = {
   title: string;
@@ -9,54 +10,32 @@ type WidgetData = {
   status: string;
 };
 
-const getWidgetData = (
-  title: string,
-  content: string,
-  author: string,
-  date: string,
-  status: string,
-  delay: number
-): Promise<WidgetData> => {
+const getWidgetData = (delay: number): Promise<WidgetData> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve({ title, content, author, date, status });
+      resolve({
+        title: faker.lorem.words(3),
+        content: faker.lorem.sentences(2),
+        author: faker.name.fullName(),
+        date: faker.date.recent().toISOString().split("T")[0],
+        status: faker.helpers.arrayElement(["Active", "Inactive", "Pending"]),
+      });
     }, delay);
   });
 };
 
 export const loader = async () => {
-  const widget1Promise = getWidgetData(
-    "Widget 1",
-    "This is the first widget.",
-    "Alice",
-    "2024-06-01",
-    "Active",
-    1000
-  );
-  const widget2Promise = getWidgetData(
-    "Widget 2",
-    "This is the second widget.",
-    "Bob",
-    "2024-06-02",
-    "Inactive",
-    3000
-  );
-  const widget3Promise = getWidgetData(
-    "Widget 3",
-    "This is the third widget.",
-    "Charlie",
-    "2024-06-03",
-    "Pending",
-    1800
-  );
+  const widget1Promise = getWidgetData(1000);
+  const widget2Promise = getWidgetData(3000);
+  const widget3Promise = getWidgetData(1800);
 
   return defer({
     widget1: widget1Promise,
-    widget2: widget2Promise, // Note, if you await widget2Promise <SuspenseWithAwait> will not work/not be necessary
+    widget2: widget2Promise,
     widget3: widget3Promise,
     notDeferredData: {
-      title: "Not Deferred Data",
-      content: "This data is not deferred.",
+      title: faker.lorem.words(3),
+      content: faker.lorem.sentences(2),
     },
   });
 };
