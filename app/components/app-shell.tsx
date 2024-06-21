@@ -17,25 +17,7 @@ import {
   PuzzlePieceIcon,
   BeakerIcon,
 } from "@heroicons/react/24/outline";
-import { NavLink } from "@remix-run/react";
-
-const navigation = [
-  { name: "Home", href: "/", icon: HomeIcon },
-  {
-    name: "This Route will crash the app",
-    href: "/test-error",
-    icon: CubeIcon,
-  },
-  {
-    name: "Defer Example",
-    href: "/defer-example",
-    icon: FolderIcon,
-  },
-  { name: "Users", href: "/users", icon: PuzzlePieceIcon },
-  // sign-up and sign-in routes
-  { name: "Sign Up", href: "/sign-up", icon: SignalIcon },
-  { name: "Sign In", href: "/sign-in", icon: BeakerIcon },
-];
+import { NavLink, useMatches } from "@remix-run/react";
 
 function classNames(...classes: (string | undefined)[]): string {
   return classes.filter(Boolean).join(" ");
@@ -43,6 +25,34 @@ function classNames(...classes: (string | undefined)[]): string {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const matches = useMatches();
+
+  const rootData = matches.find((match) => match.id === "root")?.data as
+    | { userId: string | undefined }
+    | undefined;
+
+  const navigation = [
+    { name: "Home", href: "/", icon: HomeIcon },
+    { name: "Users", href: "/users", icon: PuzzlePieceIcon },
+    {
+      name: "Defer Example",
+      href: "/defer-example",
+      icon: FolderIcon,
+    },
+    {
+      name: "This route will crash the app",
+      href: "/test-error",
+      icon: CubeIcon,
+    },
+    // sign-up and sign-in routes
+    ...(!rootData?.userId
+      ? [
+          { name: "Sign Up", href: "/sign-up", icon: SignalIcon },
+          { name: "Sign In", href: "/sign-in", icon: BeakerIcon },
+        ]
+      : []),
+  ];
 
   return (
     <>
@@ -180,10 +190,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   </ul>
                 </li>
 
-                <li className="mt-auto">
-                  {/* <UserButton /> */}
+                {/* <li className="mt-auto">
                   user-button
-                </li>
+                </li> */}
               </ul>
             </nav>
           </div>
