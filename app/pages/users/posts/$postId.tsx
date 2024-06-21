@@ -19,43 +19,50 @@ export default function User() {
   const postWithAuthor = data.postWithAuthor?.[0];
 
   return (
-    <div className="p-6 flex flex-col justify-center bg-gray-100">
-      <h1 className="text-2xl font-bold mb-6">Post Details</h1>
-      <h2 className="text-xl font-bold mb-4">Post without join</h2>
-      <ul className="bg-white p-8 rounded-lg shadow-md w-full max-w-md list-disc list-inside">
-        <li>
-          <strong>Post Name:</strong> {data.post.name}
-        </li>
-        <li>
-          <strong>Author ID:</strong> {data.post.authorId}
-        </li>
-        <li>
-          <strong>Created At:</strong>{" "}
-          {new Date(data.post.createdAt).toLocaleString()}
-        </li>
-        {data.post.updatedAt && (
-          <li>
-            <strong>Updated At:</strong>{" "}
-            {new Date(data?.post?.updatedAt).toLocaleString()}
-          </li>
-        )}
-      </ul>
-
-      <h2 className="text-xl font-bold mt-8 mb-4">Post with join</h2>
-
-      <ul className="bg-white p-8 rounded-lg shadow-md w-full max-w-md list-disc list-inside">
-        <li>
-          {postWithAuthor.post.name} by {postWithAuthor.user?.name}
-        </li>
-      </ul>
-
-      <h2 className="text-xl font-bold mt-8 mb-4">
-        Preview of getPostWithAuthor
-      </h2>
-
-      <pre>
-        {JSON.stringify(data.postWithAuthor, null, 2) || "nothing to preview"}
-      </pre>
+    <div className="flex flex-col justify-center items-center">
+      <div className="w-full max-w-2xl bg-white p-8 rounded-xl shadow-lg">
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Post without join
+          </h2>
+          <ul className="space-y-4">
+            <li className="flex justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
+              <strong className="text-gray-600">Post Name:</strong>
+              <span>{data.post.name}</span>
+            </li>
+            <li className="flex justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
+              <strong className="text-gray-600">Author ID:</strong>
+              <span>{data.post.authorId}</span>
+            </li>
+            <li className="flex justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
+              <strong className="text-gray-600">Created At:</strong>
+              <span>{new Date(data.post.createdAt).toLocaleString()}</span>
+            </li>
+            {data.post.updatedAt && (
+              <li className="flex justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
+                <strong className="text-gray-600">Updated At:</strong>
+                <span>{new Date(data.post.updatedAt).toLocaleString()}</span>
+              </li>
+            )}
+          </ul>
+        </section>
+        <section>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Post with join
+          </h2>
+          <ul className="space-y-4">
+            <li className="bg-gray-100 p-4 rounded-lg shadow-sm">
+              <span className="text-gray-600">
+                {postWithAuthor?.post?.name}
+              </span>
+              <span className="text-gray-600">by</span>
+              <span className="text-gray-800 font-semibold">
+                {postWithAuthor?.user?.name}
+              </span>
+            </li>
+          </ul>
+        </section>
+      </div>
     </div>
   );
 }

@@ -16,10 +16,10 @@ export default function User() {
   if (!user) return null;
 
   return (
-    <div className="p-6 flex flex-col">
-      {/* <h3 className="text-3xl font-semibold text-black bg-green-300 px-3 py-1">
+    <div className="flex flex-col">
+      <h3 className="text-3xl font-semibold text-black bg-green-300 px-3 py-1">
         {user.name}
-      </h3> */}
+      </h3>
 
       {/* User Nav */}
 

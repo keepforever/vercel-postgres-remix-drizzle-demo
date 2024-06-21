@@ -47,7 +47,7 @@ export default function UsersLayout() {
         Users Layout, Outlet below
       </div>
 
-      <div className="flex gap-2 flex-wrap pt-2">
+      <div className="flex gap-8 flex-wrap pt-2">
         {/* Users list */}
 
         <div className="flex flex-col items-center gap-2 flex-1">
