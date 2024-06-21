@@ -66,9 +66,6 @@ export default function Index() {
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
 
-  /* faker data */
-  const newUserPayload = getNewUserPayload();
-
   return (
     <div className="font-sans p-4 flex flex-col gap-3">
       <h1 className="text-2xl font-semibold">
@@ -105,27 +102,6 @@ export default function Index() {
             </button>
           </Link>
         </div>
-
-        {/* Add User */}
-
-        <Form method="post">
-          <input type="hidden" name="name" value={newUserPayload.name} />
-          <input type="hidden" name="email" value={newUserPayload.email} />
-          <input
-            type="hidden"
-            name="password"
-            value={newUserPayload.password}
-          />
-          <input type="hidden" name="role" value={newUserPayload.role} />
-          <input type="hidden" name="intent" value="add-user" />
-
-          <button
-            className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            type="submit"
-          >
-            Add User
-          </button>
-        </Form>
 
         {actionData && (
           <p className="text-green-600 font-semibold">{actionData.message}</p>
