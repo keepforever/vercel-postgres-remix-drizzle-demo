@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, Outlet, json, useLoaderData } from "@remix-run/react";
+import { NavLink, Outlet, json, useLoaderData } from "@remix-run/react";
 import { getUser } from "~/utils/user.server";
+import clsx from "clsx";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const userId = params.userId as string;
@@ -16,32 +17,25 @@ export default function User() {
 
   return (
     <div className="p-6 flex flex-col">
-      <div className="bg-slate-200 p-2 rounded-md shadow-md">
-        <div className="text-xl font-medium text-black">User</div>
-        <p className="">ID: {user.id}</p>
-        <p className="">Name: {user.name}</p>
-        <p className="">Email: {user.email}</p>
-        <p className="">Role: {user.role}</p>
-        <p className="">Created At: {user.createdAt}</p>
-        <p className="">Updated At: {user.updatedAt}</p>
-      </div>
+      {/* <h3 className="text-3xl font-semibold text-black bg-green-300 px-3 py-1">
+        {user.name}
+      </h3> */}
 
-      {/* Child component */}
+      {/* User Nav */}
 
-      <h3 className="mt-4 font-semibold">
-        Child Component accessing the Loader Data from the Parent layout
-        Route&apos;s loader
-      </h3>
-
-      <Link className="text-blue-500 underline text-2xl" to="posts">
-        View Posts
-      </Link>
-
-      {/* <ChildWantingLoaderData /> */}
-
-      <h1 className="text-xl font-medium text-black bg-orange-300 px-3 py-1 mt-6">
-        $userId, Outlet below
-      </h1>
+      <nav className="flex items-center gap-2">
+        <NavLink
+          to="posts"
+          className={({ isActive }) =>
+            clsx("text-lg", {
+              underline: isActive,
+              "": !isActive,
+            })
+          }
+        >
+          Posts
+        </NavLink>
+      </nav>
 
       <Outlet />
     </div>
