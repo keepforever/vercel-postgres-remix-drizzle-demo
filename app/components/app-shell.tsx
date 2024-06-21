@@ -8,6 +8,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import {
+  SignalIcon,
   Bars3Icon,
   FolderIcon,
   HomeIcon,
@@ -32,7 +33,7 @@ const navigation = [
   },
   { name: "Users", href: "/users", icon: PuzzlePieceIcon },
   // sign-up and sign-in routes
-  { name: "Sign Up", href: "/sign-up", icon: BeakerIcon },
+  { name: "Sign Up", href: "/sign-up", icon: SignalIcon },
   { name: "Sign In", href: "/sign-in", icon: BeakerIcon },
 ];
 
