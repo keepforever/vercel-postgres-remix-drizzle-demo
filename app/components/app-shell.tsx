@@ -9,29 +9,31 @@ import {
 } from "@headlessui/react";
 import {
   Bars3Icon,
-  Cog6ToothIcon,
   FolderIcon,
   HomeIcon,
   XMarkIcon,
+  CubeIcon,
+  PuzzlePieceIcon,
+  BeakerIcon,
 } from "@heroicons/react/24/outline";
 import { NavLink } from "@remix-run/react";
-
-// const DUMMY_USER_ID = "dummyUserId";
-// const DUMMY_POST_ID = "dummyPostId";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
   {
     name: "This Route will crash the app",
     href: "/test-error",
-    icon: FolderIcon,
+    icon: CubeIcon,
   },
   {
     name: "Defer Example",
     href: "/defer-example",
     icon: FolderIcon,
   },
-  { name: "Users", href: "/users", icon: HomeIcon },
+  { name: "Users", href: "/users", icon: PuzzlePieceIcon },
+  // sign-up and sign-in routes
+  { name: "Sign Up", href: "/sign-up", icon: BeakerIcon },
+  { name: "Sign In", href: "/sign-in", icon: BeakerIcon },
 ];
 
 function classNames(...classes: (string | undefined)[]): string {
@@ -128,18 +130,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                           </ul>
                         </li>
 
-                        <li className="mt-auto">
-                          <NavLink
-                            to="#"
-                            className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
-                          >
-                            <Cog6ToothIcon
-                              className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white"
-                              aria-hidden="true"
-                            />
-                            Settings
-                          </NavLink>
-                        </li>
+                        <li className="mt-auto">{/* <UserButton /> */}</li>
                       </ul>
                     </nav>
                   </div>
@@ -189,16 +180,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </li>
 
                 <li className="mt-auto">
-                  <NavLink
-                    to="#"
-                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
-                  >
-                    <Cog6ToothIcon
-                      className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white"
-                      aria-hidden="true"
-                    />
-                    Settings
-                  </NavLink>
+                  {/* <UserButton /> */}
+                  user-button
                 </li>
               </ul>
             </nav>

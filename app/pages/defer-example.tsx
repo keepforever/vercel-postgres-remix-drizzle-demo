@@ -16,7 +16,7 @@ const getWidgetData = (delay: number): Promise<WidgetData> => {
       resolve({
         title: faker.lorem.words(3),
         content: faker.lorem.sentences(2),
-        author: faker.name.fullName(),
+        author: faker.person.fullName(),
         date: faker.date.recent().toISOString().split("T")[0],
         status: faker.helpers.arrayElement(["Active", "Inactive", "Pending"]),
       });

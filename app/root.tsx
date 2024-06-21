@@ -10,6 +10,19 @@ import {
 } from "@remix-run/react";
 import "./tailwind.css";
 import { AppShell } from "./components/app-shell";
+// Import rootAuthLoader
+import { rootAuthLoader } from "@clerk/remix/ssr.server";
+import { LoaderFunction } from "@remix-run/node";
+import { ClerkApp, UserButton } from "@clerk/remix";
+
+export const loader: LoaderFunction = (args) => {
+  return rootAuthLoader(args, (/* { request } */) => {
+    // const { sessionId, userId, getToken } = request.auth;
+    // const token = getToken();
+
+    return { anyDataYouWant: "here" };
+  });
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -54,6 +67,15 @@ export const ErrorBoundary = () => {
   );
 };
 
-export default function App() {
-  return <Outlet />;
+function App() {
+  return (
+    <>
+      <div className="absolute top-0 right-0 z-50 shadow-md">
+        <UserButton />
+      </div>
+      <Outlet />
+    </>
+  );
 }
+
+export default ClerkApp(App);

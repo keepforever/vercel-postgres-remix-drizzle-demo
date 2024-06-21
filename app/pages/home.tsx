@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 import { deleteUser, insertUser } from "~/utils/user.server";
 import { faker } from "@faker-js/faker";
+import { SignedIn, SignedOut } from "@clerk/remix";
 
 export const meta: MetaFunction = () => {
   return [
@@ -76,84 +77,98 @@ export default function Index() {
 
       {/* Navbar */}
 
-      <nav className="flex items-center gap-2">
-        <Link className="text-blue-500 underline" to="/users">
-          Users
-        </Link>
-      </nav>
+      <SignedIn>
+        <nav className="flex items-center gap-2">
+          <Link className="text-blue-500 underline" to="/users">
+            Users
+          </Link>
+        </nav>
 
-      {/* Throw client sentry error */}
+        {/* Throw client sentry error */}
 
-      <div className="flex items-center gap-2 flex-wrap">
-        <button
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          type="button"
-          onClick={() => {
-            throw new Error("Some Custom Message");
-          }}
-        >
-          Throw Client Side Error
-        </button>
-      </div>
-
-      <div className="flex items-center gap-2 flex-wrap">
-        <Link to="/test-error">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Link to /test-error
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            type="button"
+            onClick={() => {
+              throw new Error("Some Custom Message");
+            }}
+          >
+            Throw Client Side Error
           </button>
-        </Link>
-      </div>
+        </div>
 
-      {/* Add User */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link to="/test-error">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Link to /test-error
+            </button>
+          </Link>
+        </div>
 
-      <Form method="post">
-        <input type="hidden" name="name" value={newUserPayload.name} />
-        <input type="hidden" name="email" value={newUserPayload.email} />
-        <input type="hidden" name="password" value={newUserPayload.password} />
-        <input type="hidden" name="role" value={newUserPayload.role} />
-        <input type="hidden" name="intent" value="add-user" />
+        {/* Add User */}
 
-        <button
-          className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          type="submit"
-        >
-          Add User
-        </button>
-      </Form>
+        <Form method="post">
+          <input type="hidden" name="name" value={newUserPayload.name} />
+          <input type="hidden" name="email" value={newUserPayload.email} />
+          <input
+            type="hidden"
+            name="password"
+            value={newUserPayload.password}
+          />
+          <input type="hidden" name="role" value={newUserPayload.role} />
+          <input type="hidden" name="intent" value="add-user" />
 
-      {actionData && (
-        <p className="text-green-600 font-semibold">{actionData.message}</p>
-      )}
+          <button
+            className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            type="submit"
+          >
+            Add User
+          </button>
+        </Form>
 
-      {/* Users List */}
+        {actionData && (
+          <p className="text-green-600 font-semibold">{actionData.message}</p>
+        )}
 
-      <div className="mt-4">
-        <h2 className="font-semibold">Users List</h2>
-        <ul>
-          {loaderData.users.map((user) => (
-            <li key={user.id} className="flex items-center gap-2 mb-2">
-              <span className="font-semibold">ID:</span> {user.id} -{" "}
-              <span className="font-semibold">Name:</span> {user.name}
-              <Link
-                className="ml-2 text-blue-500 underline"
-                to={`/users/${user.id}`}
-              >
-                Visit
-              </Link>
-              <Form method="post">
-                <input type="hidden" name="id" value={user.id} />
-                <input type="hidden" name="intent" value="delete-user" />
-                <button
-                  className="bg-red-500 hover:bg-red-700 text-white text-xs py-1 px-2 rounded"
-                  type="submit"
+        {/* Users List */}
+
+        <div className="mt-4">
+          <h2 className="font-semibold">Users List</h2>
+          <ul>
+            {loaderData.users.map((user) => (
+              <li key={user.id} className="flex items-center gap-2 mb-2">
+                <span className="font-semibold">ID:</span> {user.id} -{" "}
+                <span className="font-semibold">Name:</span> {user.name}
+                <Link
+                  className="ml-2 text-blue-500 underline"
+                  to={`/users/${user.id}`}
                 >
-                  Delete
-                </button>
-              </Form>
-            </li>
-          ))}
-        </ul>
-      </div>
+                  Visit
+                </Link>
+                <Form method="post">
+                  <input type="hidden" name="id" value={user.id} />
+                  <input type="hidden" name="intent" value="delete-user" />
+                  <button
+                    className="bg-red-500 hover:bg-red-700 text-white text-xs py-1 px-2 rounded"
+                    type="submit"
+                  >
+                    Delete
+                  </button>
+                </Form>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </SignedIn>
+
+      <SignedOut>
+        <div className="flex flex-col gap-2">
+          <h3 className="text-red-500 font-semibold text-lg">
+            Please sign in to view this page
+          </h3>
+        </div>
+      </SignedOut>
     </div>
   );
 }
