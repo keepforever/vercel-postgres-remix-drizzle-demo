@@ -9,7 +9,7 @@ export const loader = async () => {
 
 export default function UsersHome() {
   return (
-    <div className="p-6 flex">
+    <div className="flex">
       <div className="p-2">
         <div className="font-medium text-black">
           Users Home; rendered into the Outlet of <code>users-layout.tsx</code>

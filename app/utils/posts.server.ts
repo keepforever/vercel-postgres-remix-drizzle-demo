@@ -6,11 +6,11 @@ export type NewPostPayload = typeof posts.$inferInsert;
 export type UpdatePostPayload = { id: number; name: string };
 
 export const insertPost = async (payload: NewPostPayload) => {
-  const { name, authorId } = payload;
+  const { name, authorId, content } = payload;
   return await db
     .insert(posts)
-    .values({ name, authorId })
-    .returning({ id: posts.id, name: posts.name });
+    .values({ name, authorId, content })
+    .returning({ id: posts.id, name: posts.name, content: posts.content });
 };
 
 export const getPost = async (id: number) => {

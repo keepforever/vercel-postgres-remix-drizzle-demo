@@ -15,6 +15,13 @@
       "when": 1718779855753,
       "tag": "0001_freezing_leopardon",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1719097640998,
+      "tag": "0002_fast_matthew_murdock",
+      "breakpoints": true
     }
   ]
 }

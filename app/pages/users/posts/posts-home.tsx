@@ -16,5 +16,9 @@ export default function User() {
 
   if (!user) return null;
 
-  return <div className="flex flex-col">posts home</div>;
+  return (
+    <div className="flex flex-col text-2xl">
+      Select a post to see it's details
+    </div>
+  );
 }

@@ -19,6 +19,24 @@ export default function PostsLayout() {
       <div className="flex gap-8 flex-wrap pt-2">
         {/* Posts list */}
         <div className="flex flex-col items-center gap-2 flex-1">
+          {/* Create Post Button */}
+
+          <NavLink
+            to={`new`}
+            className={({ isActive }) =>
+              clsx(
+                "bg-green-500 hover:bg-green-600 text-gray-800 py-2 px-4 rounded w-full",
+                {
+                  "bg-green-700 text-white": isActive,
+                }
+              )
+            }
+          >
+            Create Post
+          </NavLink>
+
+          {/* Posts List */}
+
           {!posts?.length ? (
             <div className="">No posts found for this user</div>
           ) : (
@@ -29,7 +47,7 @@ export default function PostsLayout() {
                   to={`/users/${user?.id}/posts/${post.id}`}
                   className={({ isActive }) =>
                     clsx(
-                      "flex items-center py-2 px-2 rounded justify-between border border-gray-300 overflow-hidden gap-4",
+                      "flex items-center py-2 px-2 rounded justify-between border border-gray-300 overflow-hidden gap-4 w-full",
                       {
                         "bg-gray-200 text-gray-700 w-full hover:bg-gray-300":
                           isActive,

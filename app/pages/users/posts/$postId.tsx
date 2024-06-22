@@ -1,6 +1,24 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { getPostById, getPostWithAuthor } from "~/utils/posts.server";
+import { json, ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { useLoaderData, Form, useParams, redirect } from "@remix-run/react";
+import {
+  deletePost,
+  getPostById,
+  getPostWithAuthor,
+} from "~/utils/posts.server";
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const intent = formData.get("intent") as string;
+
+  switch (intent) {
+    case "delete-post": {
+      await deletePost(Number(formData.get("postId") as string));
+      return redirect(`/users/${formData.get("userId")}/posts`);
+    }
+    default:
+      return json({ message: "Invalid Intent" }, { status: 400 });
+  }
+};
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const postId = params.postId as string;
@@ -14,54 +32,46 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return json({ post, postWithAuthor });
 };
 
+const DeletePostButton = () => {
+  const params = useParams();
+  return (
+    <Form method="post">
+      <input type="hidden" name="postId" value={params.postId} />
+      <input type="hidden" name="userId" value={params.userId} />
+      <input type="hidden" name="intent" value="delete-post" />
+      <button
+        onClick={(e) => e.stopPropagation()}
+        className="bg-gray-500 hover:bg-gray-600 text-white text-xs py-1 px-2 rounded"
+        type="submit"
+      >
+        Delete
+      </button>
+    </Form>
+  );
+};
+
 export default function User() {
   const data = useLoaderData<typeof loader>();
   const postWithAuthor = data.postWithAuthor?.[0];
+  const post = data.post;
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="w-full max-w-2xl bg-white p-8 rounded-xl shadow-lg">
+    <div className="flex flex-col">
+      <div className="w-full max-w-3xl bg-white p-8 rounded-xl shadow-md">
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            Post without join
-          </h2>
-          <ul className="space-y-4">
-            <li className="flex justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
-              <strong className="text-gray-600">Post Name:</strong>
-              <span>{data.post.name}</span>
-            </li>
-            <li className="flex justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
-              <strong className="text-gray-600">Author ID:</strong>
-              <span>{data.post.authorId}</span>
-            </li>
-            <li className="flex justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
-              <strong className="text-gray-600">Created At:</strong>
-              <span>{new Date(data.post.createdAt).toLocaleString()}</span>
-            </li>
-            {data.post.updatedAt && (
-              <li className="flex justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
-                <strong className="text-gray-600">Updated At:</strong>
-                <span>{new Date(data.post.updatedAt).toLocaleString()}</span>
-              </li>
-            )}
-          </ul>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">{post.name}</h2>
+          <p className="text-lg text-gray-700">{post.content}</p>
         </section>
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            Post with join
-          </h2>
-          <ul className="space-y-4">
-            <li className="bg-gray-100 p-4 rounded-lg shadow-sm">
-              <span className="text-gray-600">
-                {postWithAuthor?.post?.name}
-              </span>
-              <span className="text-gray-600">by</span>
-              <span className="text-gray-800 font-semibold">
-                {postWithAuthor?.user?.name}
-              </span>
-            </li>
-          </ul>
-        </section>
+
+        <div className="flex items-center gap-2 flex-wrap justify-end">
+          <p className="text-lg text-gray-700">
+            {" by "}
+            <span className="text-indigo-600">
+              {postWithAuthor?.user?.name}
+            </span>
+          </p>
+          <DeletePostButton />
+        </div>
       </div>
     </div>
   );

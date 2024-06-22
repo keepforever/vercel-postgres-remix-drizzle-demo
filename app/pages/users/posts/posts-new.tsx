@@ -17,6 +17,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       await insertPost({
         name: formData.get("name") as string,
         authorId: Number(formData.get("authorId") as string),
+        content: formData.get("content") as string,
       });
 
       return redirect(`/users/${formData.get("authorId")}/posts`);
@@ -31,12 +32,9 @@ export default function User() {
   const params = useParams();
   const actionData = useActionData<typeof action>();
   return (
-    <div className="p-6 flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-2xl font-bold mb-6">Create a New Post</h1>
-      <Form
-        method="post"
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
-      >
+    <div className="flex flex-col justify-center">
+      <h1 className="text-xl font-bold mb-6">Create a New Post</h1>
+      <Form method="post" className="max-w-xl">
         <input type="hidden" name="intent" value="add-post" />
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
@@ -57,8 +55,25 @@ export default function User() {
           name="authorId"
           className="hidden"
           required
-          value={params.userId}
+          defaultValue={params.userId}
         />
+
+        <div className="mb-4">
+          <label
+            htmlFor="content"
+            className="block text-gray-700 font-bold mb-2"
+          >
+            Content
+          </label>
+          <textarea
+            id="content"
+            name="content"
+            rows={4}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
+            placeholder="Write your post content here..."
+            required
+          ></textarea>
+        </div>
 
         <button
           type="submit"

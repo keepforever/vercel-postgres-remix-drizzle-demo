@@ -29,6 +29,7 @@ export const posts = createTable("post", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }),
   authorId: integer("author_id"),
+  content: text("content"),
   // meta
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true })
