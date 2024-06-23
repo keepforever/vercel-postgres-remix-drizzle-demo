@@ -76,7 +76,7 @@ export default function UsersLayout() {
             {loaderData.users.map((user) => (
               <li key={user.id}>
                 <NavLink
-                  to={`/users/${user.id}`}
+                  to={`/users/${user.id}/posts`}
                   className={({ isActive }) =>
                     clsx(
                       "flex items-center py-2 px-2 rounded justify-between border border-gray-300 overflow-hidden gap-4",
