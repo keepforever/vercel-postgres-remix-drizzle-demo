@@ -36,6 +36,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     { name: "Home", href: "/", icon: HomeIcon },
     { name: "Users", href: "/users", icon: PuzzlePieceIcon },
     {
+      name: "UseFetcher Example",
+      href: "/use-fetcher-example",
+      icon: FolderIcon,
+    },
+    {
       name: "Defer Example",
       href: "/defer-example",
       icon: FolderIcon,

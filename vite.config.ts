@@ -15,6 +15,8 @@ export default defineConfig({
         return defineRoutes((route) => {
           route("/", "pages/home.tsx", { index: true });
           route("test-error", "pages/test-error.tsx");
+          route("api/users", "api/users.tsx");
+          route("use-fetcher-example", "pages/use-fetcher-example.tsx");
           route("sign-up", "pages/sign-up.tsx");
           route("sign-in", "pages/sign-in.tsx");
           route("defer-example", "pages/defer-example.tsx");
