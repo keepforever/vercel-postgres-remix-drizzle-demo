@@ -1,22 +1,36 @@
 import { useFetcher } from "@remix-run/react";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { loader as usersApiLoader } from "~/api/users";
 
-export default function UseFetcherExample() {
-  const myFetcher = useFetcher<typeof usersApiLoader>({
-    key: "users-fetcher",
+/**
+ * Custom hook for abstracting the useFetcher hook for API calls.
+ * This hook initializes a fetcher instance for a given API endpoint
+ * and manages its loading state.
+ *
+ * @param {string} endpoint - The API endpoint to fetch data from.
+ * @returns The fetcher instance with loaded data or loading state.
+ */
+function useApiLoader<T>(endpoint: string) {
+  const myFetcher = useFetcher<T>({
+    key: `api:${endpoint}`,
   });
-  const [isMounted, setIsMounted] = React.useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const load = async () => {
-      myFetcher.load(`/api/users`);
+      myFetcher.load(endpoint);
       setIsMounted(true);
     };
 
     if (isMounted) return;
     load();
-  }, [isMounted, myFetcher]);
+  }, [isMounted, myFetcher, endpoint]);
+
+  return myFetcher;
+}
+
+export default function UseFetcherExample() {
+  const myFetcher = useApiLoader<typeof usersApiLoader>("/api/users");
 
   return (
     <div className="pt-4">
