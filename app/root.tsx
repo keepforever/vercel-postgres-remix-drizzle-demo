@@ -18,8 +18,6 @@ import { ClerkApp, UserButton } from "@clerk/remix";
 export const loader: LoaderFunction = (args) => {
   return rootAuthLoader(args, ({ request }) => {
     const { userId } = request.auth;
-    // const token = getToken();
-
     return { userId };
   });
 };
