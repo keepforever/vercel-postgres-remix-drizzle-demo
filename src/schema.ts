@@ -28,7 +28,9 @@ export const userRelations = relations(user, ({ many }) => ({
 export const posts = createTable("post", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }),
-  authorId: integer("author_id"),
+  authorId: integer("author_id")
+    .references(() => user.id, { onDelete: "cascade" })
+    .notNull(),
   content: text("content"),
   // meta
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
