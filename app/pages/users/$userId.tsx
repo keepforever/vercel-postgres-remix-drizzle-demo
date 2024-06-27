@@ -23,7 +23,7 @@ export default function User() {
 
       {/* User Nav */}
 
-      <nav className="flex items-center gap-2">
+      <nav className="flex items-center gap-4 p-2">
         <NavLink
           to="posts"
           className={({ isActive }) =>
@@ -34,6 +34,20 @@ export default function User() {
           }
         >
           Posts
+        </NavLink>
+
+        <NavLink
+          to={`/users/${user.id}/posts/new`}
+          className={({ isActive }) =>
+            clsx(
+              "bg-green-300 hover:bg-green-400 text-gray-800 py-1 px-2 rounded text-xs transition-colors duration-200 ease-in-out",
+              {
+                "bg-green-500 text-white": isActive,
+              }
+            )
+          }
+        >
+          Create Post
         </NavLink>
       </nav>
 
