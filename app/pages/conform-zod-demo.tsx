@@ -1,12 +1,13 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
-import { Form, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
+import { Form, useActionData, useNavigation } from '@remix-run/react'
 import { z } from 'zod'
 
 const SimpleFormSchema = z.object({
   name: z.string().min(7, 'Min of 7 characters'),
   email: z.string().email('Invalid email address'),
+  monkey: z.string().optional(),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,26 +22,49 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
+  console.log(`
+  #########################################################
+                  xxxx
+  #########################################################
+  `)
+
   const formData = await request.formData()
   const submission = parseWithZod(formData, { schema: SimpleFormSchema })
+  console.log('\n', `submission.status = `, submission.status, '\n')
+
   // 1 sec artificial delay
-  await new Promise(resolve => {
-    setTimeout(() => {
-      resolve(0)
-    }, 1000)
-  })
+  // await new Promise(resolve => {
+  //   setTimeout(() => {
+  //     resolve(0)
+  //   }, 1000)
+  // })
 
   if (submission.status !== 'success') {
-    return json({ result: submission.reply() }, { status: submission.status === 'error' ? 400 : 200 })
+    return json(
+      {
+        result: submission.reply({
+          formErrors: ['Alpha error', 'Beta error'],
+          fieldErrors: { monkey: ['Invalid monkey alpha'] },
+        }),
+      },
+      { status: submission.status === 'error' ? 400 : 200 },
+    )
   } else {
     console.log('Submission is valid', submission.value)
     console.log('\n', `submission.status = `, submission.status, '\n')
-    return json({ result: submission.reply() }, { status: 200 })
+    return json(
+      {
+        result: submission.reply({
+          formErrors: ['Ceta error', 'Deta error'],
+          fieldErrors: { monkey: ['Invalid monkey beta'] },
+        }),
+      },
+      { status: 200 },
+    )
   }
 }
 
 export default function SimpleForm() {
-  const loaderData = useLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
   const navigation = useNavigation()
   console.log('\n', `navigation = `, navigation, '\n')
@@ -50,14 +74,16 @@ export default function SimpleForm() {
     constraint: getZodConstraint(SimpleFormSchema),
     lastResult: actionData?.result,
     defaultValue: {
-      name: loaderData.item?.name,
-      email: loaderData.item?.email,
+      name: '',
+      email: '',
+      monkey: '',
     },
   })
 
   console.log('\n', `actionData = `, actionData, '\n')
   console.log('\n', `form = `, form, '\n')
   console.log('\n', `form.status = `, form.status, '\n')
+  console.log('\n', `fields.monkey.errors = `, fields.monkey.errors, '\n')
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
@@ -70,6 +96,7 @@ export default function SimpleForm() {
           </label>
           <input
             {...getInputProps(fields.name, { type: 'text' })}
+            placeholder="John Doe"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
           {fields.name.errors && <span className="text-sm text-red-600 mt-1">{fields.name.errors}</span>}
@@ -81,6 +108,7 @@ export default function SimpleForm() {
           </label>
           <input
             {...getInputProps(fields.email, { type: 'email' })}
+            placeholder="your email"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
           {fields.email.errors && <span className="text-sm text-red-600 mt-1">{fields.email.errors}</span>}
