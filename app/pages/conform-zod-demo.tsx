@@ -3,6 +3,7 @@ import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
 import { z } from 'zod'
+import { ErrorList } from '~/components/error-list'
 
 const SimpleFormSchema = z.object({
   name: z.string().min(7, 'Min of 7 characters'),
@@ -99,7 +100,8 @@ export default function SimpleForm() {
             placeholder="John Doe"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
-          {fields.name.errors && <span className="text-sm text-red-600 mt-1">{fields.name.errors}</span>}
+
+          <ErrorList errors={fields.name.errors} />
         </div>
 
         <div>
@@ -111,7 +113,7 @@ export default function SimpleForm() {
             placeholder="your email"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
-          {fields.email.errors && <span className="text-sm text-red-600 mt-1">{fields.email.errors}</span>}
+          <ErrorList errors={fields.email.errors} />
         </div>
 
         <button
@@ -123,14 +125,27 @@ export default function SimpleForm() {
         </button>
       </Form>
 
-      <div className="mt-6">
-        <pre className="bg-gray-100 p-4 rounded-lg text-sm text-gray-700">
-          {JSON.stringify(form.errors, null, 2) || 'no form errors to show'}
-        </pre>
-        <pre className="bg-gray-100 p-4 rounded-lg text-sm text-gray-700 mt-4">
-          {JSON.stringify(form.errorId, null, 2) || 'no form errorId to show'}
-        </pre>
+      <ErrorList errors={form.errors} id="form-errors" />
+
+      <div className="flex items-center gap-2 flex-wrap outline outline-blue-300 p-3 rounded-md">
+        <div className="flex flex-col gap-2">
+          <span>Monkey list</span>
+          <ErrorList errors={fields.monkey.errors} />
+        </div>
       </div>
+
+      <details>
+        <summary>json</summary>
+
+        <div className="mt-6">
+          <pre className="bg-gray-100 p-4 rounded-lg text-sm text-gray-700">
+            {JSON.stringify(form.errors, null, 2) || 'no form errors to show'}
+          </pre>
+          <pre className="bg-gray-100 p-4 rounded-lg text-sm text-gray-700 mt-4">
+            {JSON.stringify(form.errorId, null, 2) || 'no form errorId to show'}
+          </pre>
+        </div>
+      </details>
     </div>
   )
 }
