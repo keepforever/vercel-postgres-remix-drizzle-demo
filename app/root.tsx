@@ -1,26 +1,18 @@
-import { captureRemixErrorBoundaryError } from "@sentry/remix";
-import {
-  Link,
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useRouteError,
-} from "@remix-run/react";
-import "./tailwind.css";
-import { AppShell } from "./components/app-shell";
+import { captureRemixErrorBoundaryError } from '@sentry/remix'
+import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react'
+import './tailwind.css'
+import { AppShell } from './components/app-shell'
 // Import rootAuthLoader
-import { rootAuthLoader } from "@clerk/remix/ssr.server";
-import { LoaderFunction } from "@remix-run/node";
-import { ClerkApp, UserButton } from "@clerk/remix";
+import { rootAuthLoader } from '@clerk/remix/ssr.server'
+import { LoaderFunction } from '@remix-run/node'
+import { ClerkApp, UserButton } from '@clerk/remix'
 
-export const loader: LoaderFunction = (args) => {
+export const loader: LoaderFunction = args => {
   return rootAuthLoader(args, ({ request }) => {
-    const { userId } = request.auth;
-    return { userId };
-  });
-};
+    const { userId } = request.auth
+    return { userId }
+  })
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -37,19 +29,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
-  );
+  )
 }
 
 export const ErrorBoundary = () => {
-  const error = useRouteError();
-  captureRemixErrorBoundaryError(error);
+  const error = useRouteError()
+  captureRemixErrorBoundaryError(error)
   return (
     <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 rounded-md">
       <div className="max-w-md w-full space-y-8">
         <div className="flex flex-col items-center gap-2">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Something went wrong
-          </h2>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Something went wrong</h2>
 
           <div className="flex items-center gap-2 flex-wrap justify-center">
             <Link
@@ -62,8 +52,8 @@ export const ErrorBoundary = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 function App() {
   return (
@@ -73,7 +63,7 @@ function App() {
       </div>
       <Outlet />
     </>
-  );
+  )
 }
 
-export default ClerkApp(App);
+export default ClerkApp(App)

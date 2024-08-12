@@ -1,4 +1,4 @@
-import { SignUp } from "@clerk/remix";
+import { SignUp } from '@clerk/remix'
 
 export default function SignUpPage() {
   return (
@@ -6,5 +6,5 @@ export default function SignUpPage() {
       <h1>Sign Up route</h1>
       <SignUp />
     </div>
-  );
+  )
 }

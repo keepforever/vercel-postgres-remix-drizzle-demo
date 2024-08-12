@@ -3,5 +3,5 @@ export default function TestChildPage() {
     <div>
       <h1>Test Child</h1>
     </div>
-  );
+  )
 }

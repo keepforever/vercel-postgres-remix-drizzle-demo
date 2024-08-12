@@ -1,36 +1,30 @@
-import {
-  Form,
-  json,
-  redirect,
-  useActionData,
-  useParams,
-} from "@remix-run/react";
-import { ActionFunctionArgs } from "@remix-run/node";
-import { insertPost } from "~/utils/posts.server";
+import { Form, json, redirect, useActionData, useParams } from '@remix-run/react'
+import { ActionFunctionArgs } from '@remix-run/node'
+import { insertPost } from '~/utils/posts.server'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData();
-  const intent = formData.get("intent") as string;
+  const formData = await request.formData()
+  const intent = formData.get('intent') as string
 
   switch (intent) {
-    case "add-post": {
+    case 'add-post': {
       await insertPost({
-        name: formData.get("name") as string,
-        authorId: Number(formData.get("authorId") as string),
-        content: formData.get("content") as string,
-      });
+        name: formData.get('name') as string,
+        authorId: Number(formData.get('authorId') as string),
+        content: formData.get('content') as string,
+      })
 
-      return redirect(`/users/${formData.get("authorId")}/posts`);
+      return redirect(`/users/${formData.get('authorId')}/posts`)
     }
 
     default:
-      return json({ message: "Invalid Intent" }, { status: 400 });
+      return json({ message: 'Invalid Intent' }, { status: 400 })
   }
-};
+}
 
 export default function User() {
-  const params = useParams();
-  const actionData = useActionData<typeof action>();
+  const params = useParams()
+  const actionData = useActionData<typeof action>()
   return (
     <div className="flex flex-col justify-center">
       <h1 className="text-xl font-bold mb-6">Create a New Post</h1>
@@ -49,20 +43,10 @@ export default function User() {
           />
         </div>
 
-        <input
-          type="number"
-          id="authorId"
-          name="authorId"
-          className="hidden"
-          required
-          defaultValue={params.userId}
-        />
+        <input type="number" id="authorId" name="authorId" className="hidden" required defaultValue={params.userId} />
 
         <div className="mb-4">
-          <label
-            htmlFor="content"
-            className="block text-gray-700 font-bold mb-2"
-          >
+          <label htmlFor="content" className="block text-gray-700 font-bold mb-2">
             Content
           </label>
           <textarea
@@ -84,10 +68,8 @@ export default function User() {
       </Form>
 
       {actionData?.message && (
-        <div className="mt-4 bg-green-100 text-green-800 p-2 rounded-md shadow-md">
-          {actionData.message}
-        </div>
+        <div className="mt-4 bg-green-100 text-green-800 p-2 rounded-md shadow-md">{actionData.message}</div>
       )}
     </div>
-  );
+  )
 }

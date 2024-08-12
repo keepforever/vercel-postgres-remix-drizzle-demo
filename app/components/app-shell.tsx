@@ -1,12 +1,7 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from "react";
-import {
-  Dialog,
-  DialogPanel,
-  Transition,
-  TransitionChild,
-} from "@headlessui/react";
+import { useState } from 'react'
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import {
   SignalIcon,
   Bars3Icon,
@@ -16,48 +11,51 @@ import {
   CubeIcon,
   PuzzlePieceIcon,
   BeakerIcon,
-} from "@heroicons/react/24/outline";
-import { NavLink, useMatches } from "@remix-run/react";
+} from '@heroicons/react/24/outline'
+import { NavLink, useMatches } from '@remix-run/react'
 
 function classNames(...classes: (string | undefined)[]): string {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const matches = useMatches();
+  const matches = useMatches()
 
-  const rootData = matches.find((match) => match.id === "root")?.data as
-    | { userId: string | undefined }
-    | undefined;
+  const rootData = matches.find(match => match.id === 'root')?.data as { userId: string | undefined } | undefined
 
   const navigation = [
-    { name: "Home", href: "/", icon: HomeIcon },
-    { name: "Users", href: "/users", icon: PuzzlePieceIcon },
+    { name: 'Home', href: '/', icon: HomeIcon },
+    { name: 'Users', href: '/users', icon: PuzzlePieceIcon },
     {
-      name: "UseFetcher Example",
-      href: "/use-fetcher-example",
+      name: 'UseFetcher Example',
+      href: '/use-fetcher-example',
       icon: FolderIcon,
     },
     {
-      name: "Defer Example",
-      href: "/defer-example",
+      name: 'Defer Example',
+      href: '/defer-example',
       icon: FolderIcon,
     },
     {
-      name: "This route will crash the app",
-      href: "/test-error",
+      name: 'This route will crash the app',
+      href: '/test-error',
+      icon: CubeIcon,
+    },
+    {
+      name: 'Conform Zod Demo',
+      href: '/conform-zod-demo',
       icon: CubeIcon,
     },
     // sign-up and sign-in routes
     ...(!rootData?.userId
       ? [
-          { name: "Sign Up", href: "/sign-up", icon: SignalIcon },
-          { name: "Sign In", href: "/sign-in", icon: BeakerIcon },
+          { name: 'Sign Up', href: '/sign-up', icon: SignalIcon },
+          { name: 'Sign In', href: '/sign-in', icon: BeakerIcon },
         ]
       : []),
-  ];
+  ]
 
   return (
     <>
@@ -94,16 +92,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     leaveTo="opacity-0"
                   >
                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                      <button
-                        type="button"
-                        className="-m-2.5 p-2.5"
-                        onClick={() => setSidebarOpen(false)}
-                      >
+                      <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
                         <span className="sr-only">Close sidebar</span>
-                        <XMarkIcon
-                          className="h-6 w-6 text-white"
-                          aria-hidden="true"
-                        />
+                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
                       </button>
                     </div>
                   </TransitionChild>
@@ -122,23 +113,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       <ul className="flex flex-1 flex-col gap-y-7">
                         <li>
                           <ul className="-mx-2 space-y-1">
-                            {navigation.map((item) => (
+                            {navigation.map(item => (
                               <li key={item.name}>
                                 <NavLink
                                   to={item.href}
                                   className={({ isActive }) => {
                                     return classNames(
                                       isActive
-                                        ? "bg-indigo-700 text-white"
-                                        : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
-                                      "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
-                                    );
+                                        ? 'bg-indigo-700 text-white'
+                                        : 'text-indigo-200 hover:bg-indigo-700 hover:text-white',
+                                      'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
+                                    )
                                   }}
                                 >
-                                  <item.icon
-                                    className={classNames("h-6 w-6 shrink-0")}
-                                    aria-hidden="true"
-                                  />
+                                  <item.icon className={classNames('h-6 w-6 shrink-0')} aria-hidden="true" />
                                   {item.name}
                                 </NavLink>
                               </li>
@@ -171,23 +159,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
+                    {navigation.map(item => (
                       <li key={item.name}>
                         <NavLink
                           to={item.href}
                           className={({ isActive }) => {
                             return classNames(
                               isActive
-                                ? "bg-indigo-700 text-white"
-                                : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
-                              "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
-                            );
+                                ? 'bg-indigo-700 text-white'
+                                : 'text-indigo-200 hover:bg-indigo-700 hover:text-white',
+                              'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
+                            )
                           }}
                         >
-                          <item.icon
-                            className={classNames("h-6 w-6 shrink-0")}
-                            aria-hidden="true"
-                          />
+                          <item.icon className={classNames('h-6 w-6 shrink-0')} aria-hidden="true" />
                           {item.name}
                         </NavLink>
                       </li>
@@ -205,11 +190,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         <div className="lg:pl-72">
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 md:hidden">
-            <button
-              type="button"
-              className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
+            <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
@@ -221,5 +202,5 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </div>
     </>
-  );
+  )
 }

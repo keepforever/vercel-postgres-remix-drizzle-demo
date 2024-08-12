@@ -1,8 +1,8 @@
-import React from "react";
-import { useUserLayoutData } from "~/pages/users/hooks";
+import React from 'react'
+import { useUserLayoutData } from '~/pages/users/hooks'
 
 export const ChildWantingLoaderData: React.FC = () => {
-  const userLayoutData = useUserLayoutData();
+  const userLayoutData = useUserLayoutData()
 
   return (
     <div>
@@ -10,5 +10,5 @@ export const ChildWantingLoaderData: React.FC = () => {
 
       <pre>{JSON.stringify(userLayoutData, null, 2)}</pre>
     </div>
-  );
-};
+  )
+}

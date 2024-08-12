@@ -1,36 +1,36 @@
-import { Await, defer, useLoaderData } from "@remix-run/react";
-import { SuspenseWithAwait } from "~/components/suspense-with-await";
-import { faker } from "@faker-js/faker";
-import { Suspense } from "react";
+import { Await, defer, useLoaderData } from '@remix-run/react'
+import { SuspenseWithAwait } from '~/components/suspense-with-await'
+import { faker } from '@faker-js/faker'
+import { Suspense } from 'react'
 
 type WidgetData = {
-  title: string;
-  content: string;
-  author: string;
-  date: string;
-  status: string;
-};
+  title: string
+  content: string
+  author: string
+  date: string
+  status: string
+}
 
 const getWidgetData = (delay: number): Promise<WidgetData> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         title: faker.lorem.words(3),
         content: faker.lorem.sentences(2),
         author: faker.person.fullName(),
-        date: faker.date.recent().toISOString().split("T")[0],
-        status: faker.helpers.arrayElement(["Active", "Inactive", "Pending"]),
-      });
-    }, delay);
-  });
-};
+        date: faker.date.recent().toISOString().split('T')[0],
+        status: faker.helpers.arrayElement(['Active', 'Inactive', 'Pending']),
+      })
+    }, delay)
+  })
+}
 
 export const loader = async () => {
-  const widget1Promise = getWidgetData(1000);
-  const widget2Promise = getWidgetData(3000);
-  const widget3Promise = getWidgetData(1800);
+  const widget1Promise = getWidgetData(1000)
+  const widget2Promise = getWidgetData(3000)
+  const widget3Promise = getWidgetData(1800)
 
-  const dummyData = fetch("https://jsonplaceholder.typicode.com/posts");
+  const dummyData = fetch('https://jsonplaceholder.typicode.com/posts')
 
   return defer({
     widget1: widget1Promise,
@@ -40,12 +40,12 @@ export const loader = async () => {
       title: faker.lorem.words(3),
       content: faker.lorem.sentences(2),
     },
-    dummyData: dummyData.then((res) => {
-      console.log("\n", `hello dummy data then `, "\n");
-      return res.json();
+    dummyData: dummyData.then(res => {
+      console.log('\n', `hello dummy data then `, '\n')
+      return res.json()
     }),
-  });
-};
+  })
+}
 
 const WidgetFallback = ({ title }: { title: string }) => (
   <div className="p-4">
@@ -61,11 +61,9 @@ const WidgetFallback = ({ title }: { title: string }) => (
     <p className="text-gray-600">
       <span className="bg-gray-200 animate-pulse block h-4 w-1/4">&nbsp;</span>
     </p>
-    <p className="mt-2 inline-block px-3 py-1 rounded-full bg-gray-200 animate-pulse">
-      &nbsp;
-    </p>
+    <p className="mt-2 inline-block px-3 py-1 rounded-full bg-gray-200 animate-pulse">&nbsp;</p>
   </div>
-);
+)
 
 const WidgetComponent = ({ widget }: { widget: WidgetData }) => (
   <div className="p-4 bg-white shadow-md rounded-lg">
@@ -75,20 +73,20 @@ const WidgetComponent = ({ widget }: { widget: WidgetData }) => (
     <p className="text-gray-600">Date: {widget.date}</p>
     <p
       className={`mt-2 inline-block px-3 py-1 rounded-full ${
-        widget.status === "Active"
-          ? "bg-green-200 text-green-800"
-          : widget.status === "Inactive"
-          ? "bg-red-200 text-red-800"
-          : "bg-yellow-200 text-yellow-800"
+        widget.status === 'Active'
+          ? 'bg-green-200 text-green-800'
+          : widget.status === 'Inactive'
+          ? 'bg-red-200 text-red-800'
+          : 'bg-yellow-200 text-yellow-800'
       }`}
     >
       {widget.status}
     </p>
   </div>
-);
+)
 
 export default function Dashboard() {
-  const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>()
 
   return (
     <main className="p-2 flex flex-col gap-3">
@@ -102,9 +100,7 @@ export default function Dashboard() {
         <SuspenseWithAwait
           fallback={<WidgetFallback title="Widget 1" />}
           resolve={data.widget1}
-          errorElement={
-            <p className="text-center text-red-500">Error loading Widget 1!</p>
-          }
+          errorElement={<p className="text-center text-red-500">Error loading Widget 1!</p>}
         >
           {(widget: WidgetData) => <WidgetComponent widget={widget} />}
         </SuspenseWithAwait>
@@ -112,9 +108,7 @@ export default function Dashboard() {
         <SuspenseWithAwait
           fallback={<WidgetFallback title="Widget 2" />}
           resolve={data.widget2}
-          errorElement={
-            <p className="text-center text-red-500">Error loading Widget 2!</p>
-          }
+          errorElement={<p className="text-center text-red-500">Error loading Widget 2!</p>}
         >
           {(widget: WidgetData) => <WidgetComponent widget={widget} />}
         </SuspenseWithAwait>
@@ -122,9 +116,7 @@ export default function Dashboard() {
         <SuspenseWithAwait
           fallback={<WidgetFallback title="Widget 3" />}
           resolve={data.widget3}
-          errorElement={
-            <p className="text-center text-red-500">Error loading Widget 3!</p>
-          }
+          errorElement={<p className="text-center text-red-500">Error loading Widget 3!</p>}
         >
           {(widget: WidgetData) => <WidgetComponent widget={widget} />}
         </SuspenseWithAwait>
@@ -137,36 +129,30 @@ export default function Dashboard() {
       </h2>
 
       <div className="p-4 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold mb-2">
-          {data.notDeferredData.title}
-        </h2>
+        <h2 className="text-2xl font-semibold mb-2">{data.notDeferredData.title}</h2>
         <p>{data.notDeferredData.content}</p>
       </div>
 
       <hr className="my-3 border-t border-gray-200" />
 
       <h2>
-        <span className="text-2xl font-semibold">
-          Posts Fetched from jsonplaceholder api (also deferred)
-        </span>
+        <span className="text-2xl font-semibold">Posts Fetched from jsonplaceholder api (also deferred)</span>
       </h2>
 
       <Suspense fallback={<>Loading...</>}>
         <Await resolve={data.dummyData} errorElement={<>error...</>}>
-          {(posts) => (
+          {posts => (
             <div className="p-4 flex flex-col gap-4">
-              {posts.map(
-                (post: { id: number; title: string; body: string }) => (
-                  <div key={post.id} className="mb-4">
-                    <h3 className="text-lg font-semibold">{post.title}</h3>
-                    <p>{post.body}</p>
-                  </div>
-                )
-              )}
+              {posts.map((post: { id: number; title: string; body: string }) => (
+                <div key={post.id} className="mb-4">
+                  <h3 className="text-lg font-semibold">{post.title}</h3>
+                  <p>{post.body}</p>
+                </div>
+              ))}
             </div>
           )}
         </Await>
       </Suspense>
     </main>
-  );
+  )
 }
