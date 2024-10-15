@@ -10,6 +10,7 @@ export default defineConfig({
         v3_fetcherPersist: true,
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
+        v3_singleFetch: true,
       },
       routes(defineRoutes) {
         return defineRoutes(route => {
@@ -46,3 +47,10 @@ export default defineConfig({
     sourcemap: true,
   },
 })
+
+declare module '@remix-run/server-runtime' {
+  // or cloudflare, deno, etc.
+  interface Future {
+    v3_singleFetch: true
+  }
+}
