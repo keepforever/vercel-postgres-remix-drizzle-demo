@@ -18,25 +18,35 @@ export async function loader({ request }: LoaderFunctionArgs) {
       { role: 'system', content: 'You are a helpful assistant.' },
       {
         role: 'user',
-        content: 'Write a haiku about recursion in programming.',
+        content: `Write a sentence about ${query}.`,
       },
     ],
+    stream: true,
   })
 
-  const theMessage = completion.choices[0].message
-  console.log('\n', `theMessage = `, theMessage, '\n')
-
   return eventStream(request.signal, function setup(send) {
-    const intervalId = setInterval(() => {
-      send({ event: 'time', data: new Date().toISOString() })
-    }, 1000)
+    async function sendMessages() {
+      for await (const chunk of completion) {
+        send({ event: 'time', data: chunk.choices[0]?.delta?.content || '' })
+      }
+    }
 
-    request.signal.addEventListener('abort', () => {
-      clearInterval(intervalId)
-    })
+    sendMessages()
+
+    let counter = 0
 
     return () => {
-      clearInterval(intervalId)
+      console.log(
+        '\n',
+        `XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        
+        hello from loader
+
+        ${counter++}
+        
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`,
+        '\n',
+      )
     }
   })
 }
