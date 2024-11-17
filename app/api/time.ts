@@ -2,6 +2,9 @@ import { LoaderFunctionArgs } from '@remix-run/node'
 import { eventStream } from 'remix-utils/sse/server'
 import { interval } from 'remix-utils/timers'
 
+// import OpenAI from 'openai'
+// const openai = new OpenAI()
+
 export async function loader({ request }: LoaderFunctionArgs) {
   return eventStream(request.signal, function setup(send) {
     async function run() {

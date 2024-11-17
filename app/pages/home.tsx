@@ -18,6 +18,7 @@ export function getNewUserPayload() {
   }
 }
 import { useEventSource } from 'remix-utils/sse/react'
+import { useState } from 'react'
 
 function Counter() {
   // Here `/sse/time` is the resource route returning an eventStream response
@@ -77,9 +78,35 @@ export default function Index() {
   const actionData = useActionData<typeof action>()
   const loaderData = useLoaderData<typeof loader>()
 
+  const [results, setResults] = useState('')
+
+  const handleFormSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+
+    // const formData = new FormData(event.target as HTMLFormElement)
+    // const query = formData.get('query')
+
+    const sse = new EventSource(`/api/time`)
+
+    sse.addEventListener('time', event => {
+      // console.log("event: ", event);
+      setResults(prevResults => prevResults + event.data)
+    })
+
+    sse.addEventListener('error', event => {
+      console.log('error: ', event)
+      sse.close()
+    })
+  }
+
   return (
     <div className="font-sans p-4 flex flex-col gap-3">
       <h1 className="text-2xl font-semibold">Hello Remix, Drizzle, Postgresql</h1>
+      <form onSubmit={handleFormSubmit}>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Test</button>
+        test results: {results}
+      </form>
+
       <Counter />
       {/* Navbar */}
       <SignedIn>
