@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs, MetaFunction } from '@remix-run/node'
 import { db } from '../db.server'
+import { ClientOnly } from 'remix-utils/client-only'
 import { Form, Link, json, useActionData, useLoaderData } from '@remix-run/react'
 import { deleteUser, insertUser } from '~/utils/user.server'
 import { faker } from '@faker-js/faker'
@@ -124,6 +125,10 @@ export default function Index() {
           <h3 className="text-red-500 font-semibold text-lg">Please sign in to view this page</h3>
         </div>
       </SignedOut>
+
+      <ClientOnly fallback={<h2 className="text-lg font-semibold text-primary-foreground">Loading...</h2>}>
+        {() => <div className="flex flex-col gap-4">hello</div>}
+      </ClientOnly>
     </div>
   )
 }
