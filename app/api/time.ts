@@ -5,11 +5,12 @@ import { interval } from 'remix-utils/timers'
 export async function loader({ request }: LoaderFunctionArgs) {
   return eventStream(request.signal, function setup(send) {
     async function run() {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       for await (const _ of interval(1000, { signal: request.signal })) {
         send({ event: 'time', data: new Date().toISOString() })
       }
     }
-
     run()
+    return () => {}
   })
 }
