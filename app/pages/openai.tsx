@@ -22,6 +22,7 @@ export default function Index() {
   const [results, setResults] = useState('')
   const eventSourceRef = useRef<EventSource | null>(null)
   const connectionCountRef = useRef(0) // Track connection count for debugging
+  const isStreaming = eventSourceRef.current !== null
 
   useEffect(() => {
     return () => {
@@ -91,11 +92,16 @@ export default function Index() {
             type="text"
             name="query"
             placeholder="Enter your query"
-            className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-3xl"
+            className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-3xl disabled:bg-gray-100"
           />
 
           <div className="flex items-center gap-2 flex-wrap">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Test</button>
+            <button
+              disabled={isStreaming}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isStreaming ? 'Streaming...' : 'Submit'}
+            </button>
           </div>
         </form>
       </SignedIn>

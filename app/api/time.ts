@@ -1,10 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
 import { eventStream } from 'remix-utils/sse/server'
 import OpenAI from 'openai'
-import { EventEmitter } from 'events'
-
-// Increase the maximum number of listeners for AbortSignal
-EventEmitter.defaultMaxListeners = 20
 
 const openai = new OpenAI()
 // time.ts
