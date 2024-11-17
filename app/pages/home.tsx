@@ -83,10 +83,11 @@ export default function Index() {
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    // const formData = new FormData(event.target as HTMLFormElement)
-    // const query = formData.get('query')
+    const formData = new FormData(event.target as HTMLFormElement)
+    const query = formData.get('query')
+    const encodedQuery = encodeURIComponent(query as string)
 
-    const sse = new EventSource(`/api/time`)
+    const sse = new EventSource(`/api/time${encodedQuery ? `?query=${encodedQuery}` : ''}`)
 
     sse.addEventListener('time', event => {
       // console.log("event: ", event);
@@ -103,6 +104,11 @@ export default function Index() {
     <div className="font-sans p-4 flex flex-col gap-3">
       <h1 className="text-2xl font-semibold">Hello Remix, Drizzle, Postgresql</h1>
       <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          name="query"
+          className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Test</button>
         test results: {results}
       </form>
