@@ -17,9 +17,29 @@ export function getNewUserPayload() {
     role: faker.helpers.arrayElement(['admin', 'customer']),
   }
 }
+import { useEventSource } from 'remix-utils/sse/react'
+
+function Counter() {
+  // Here `/sse/time` is the resource route returning an eventStream response
+  const time = useEventSource('/api/time', { event: 'time' })
+
+  if (!time) return null
+
+  return (
+    <time dateTime={time}>
+      {new Date(time).toLocaleTimeString('en', {
+        minute: '2-digit',
+        second: '2-digit',
+        hour: '2-digit',
+      })}
+    </time>
+  )
+}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData()
+
+  // app/components/counter.ts
 
   const intent = formData.get('intent') as string
 
@@ -60,9 +80,8 @@ export default function Index() {
   return (
     <div className="font-sans p-4 flex flex-col gap-3">
       <h1 className="text-2xl font-semibold">Hello Remix, Drizzle, Postgresql</h1>
-
+      <Counter />
       {/* Navbar */}
-
       <SignedIn>
         <nav className="flex items-center gap-2">
           <Link className="text-blue-500 underline" to="/users">
@@ -118,7 +137,6 @@ export default function Index() {
           </ul>
         </div>
       </SignedIn>
-
       <SignedOut>
         <div className="flex flex-col gap-2">
           <h3 className="text-red-500 font-semibold text-lg">Please sign in to view this page</h3>
