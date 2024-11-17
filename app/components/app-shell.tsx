@@ -48,6 +48,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       href: '/conform-zod-demo',
       icon: CubeIcon,
     },
+
+    {
+      name: 'OpenAI',
+      href: '/openai',
+      icon: CubeIcon,
+    },
     // sign-up and sign-in routes
     ...(!rootData?.userId
       ? [

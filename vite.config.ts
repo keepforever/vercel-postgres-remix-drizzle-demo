@@ -16,6 +16,7 @@ export default defineConfig({
         return defineRoutes(route => {
           route('/', 'pages/home.tsx', { index: true })
           route('test-error', 'pages/test-error.tsx')
+          route('openai', 'pages/openai.tsx')
           route('api/users', 'api/users.tsx')
           route('api/time', 'api/time.ts')
           route('use-fetcher-example', 'pages/use-fetcher-example.tsx')

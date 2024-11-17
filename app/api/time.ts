@@ -7,10 +7,12 @@ import { EventEmitter } from 'events'
 EventEmitter.defaultMaxListeners = 20
 
 const openai = new OpenAI()
-
+// time.ts
 export async function loader({ request }: LoaderFunctionArgs) {
   const query = new URL(request.url).searchParams.get('query')
-  console.log(`GET: Completion Loader called with query: ${query}`)
+  const connectionId = Math.random().toString(36).slice(2, 9) // Generate unique ID for this connection
+
+  console.log(`🟦 [${connectionId}] New stream request for query: "${query}"`)
 
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
@@ -25,28 +27,40 @@ export async function loader({ request }: LoaderFunctionArgs) {
   })
 
   return eventStream(request.signal, function setup(send) {
+    let completed = false
+    let chunkCount = 0
+
     async function sendMessages() {
-      for await (const chunk of completion) {
-        send({ event: 'time', data: chunk.choices[0]?.delta?.content || '' })
+      try {
+        console.log(`🟨 [${connectionId}] Starting to stream chunks`)
+
+        for await (const chunk of completion) {
+          if (request.signal.aborted) {
+            console.log(`🟥 [${connectionId}] Request aborted after ${chunkCount} chunks`)
+            break
+          }
+          chunkCount++
+          send({ event: 'time', data: chunk.choices[0]?.delta?.content || '' })
+        }
+
+        completed = true
+        console.log(`🟩 [${connectionId}] Stream completed successfully after ${chunkCount} chunks`)
+        send({ event: 'end', data: '' })
+      } catch (error) {
+        console.error(`🟥 [${connectionId}] Error during streaming:`, error)
+        throw error
       }
     }
 
     sendMessages()
 
-    let counter = 0
-
+    // Cleanup function
     return () => {
-      console.log(
-        '\n',
-        `XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        
-        hello from loader
-
-        ${counter++}
-        
-        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`,
-        '\n',
-      )
+      if (!completed) {
+        console.log(`🟧 [${connectionId}] Stream cleanup triggered before completion (${chunkCount} chunks sent)`)
+      } else {
+        console.log(`⬜️ [${connectionId}] Normal cleanup after successful completion`)
+      }
     }
   })
 }
