@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
 import { eventStream } from 'remix-utils/sse/server'
 import OpenAI from 'openai'
+import { ServerEventKey } from '~/constants'
 
 const openai = new OpenAI()
 // time.ts
@@ -36,7 +37,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
             break
           }
           chunkCount++
-          send({ event: 'time', data: chunk.choices[0]?.delta?.content || '' })
+          send({ event: ServerEventKey.Time, data: chunk.choices[0]?.delta?.content || '' })
         }
 
         completed = true

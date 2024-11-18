@@ -131,10 +131,11 @@ export default function Index() {
 }
 
 import { useEventSource } from 'remix-utils/sse/react'
+import { ServerEventKey } from '~/constants'
 
 export function Counter() {
   // Here `/sse/time` is the resource route returning an eventStream response
-  const time = useEventSource('/api/time', { event: 'time' })
+  const time = useEventSource('/api/time', { event: ServerEventKey.Time })
 
   if (!time) return null
 

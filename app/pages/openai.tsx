@@ -2,6 +2,7 @@ import { SignedIn } from '@clerk/remix'
 import { type MetaFunction, type LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useEffect, useRef, useState } from 'react'
 import { useEventSource } from 'remix-utils/sse/react'
+import { ServerEventKey } from '~/constants'
 import { useAnimatedText } from '~/hooks/useAnimatedText'
 
 export const meta: MetaFunction = () => {
@@ -56,7 +57,7 @@ export default function Index() {
       console.log(`📡 Connection #${connectionCountRef.current} established`)
     })
 
-    sse.addEventListener('time', event => {
+    sse.addEventListener(ServerEventKey.Time, event => {
       setResults(prevResults => prevResults + event.data)
     })
 
@@ -118,7 +119,7 @@ export default function Index() {
 
 export function Counter() {
   // Here `/sse/time` is the resource route returning an eventStream response
-  const time = useEventSource('/api/time', { event: 'time' })
+  const time = useEventSource('/api/time', { event: ServerEventKey.Time })
 
   if (!time) return null
 
