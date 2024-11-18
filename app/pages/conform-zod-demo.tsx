@@ -23,22 +23,8 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  console.log(`
-  #########################################################
-                  xxxx
-  #########################################################
-  `)
-
   const formData = await request.formData()
   const submission = parseWithZod(formData, { schema: SimpleFormSchema })
-  console.log('\n', `submission.status = `, submission.status, '\n')
-
-  // 1 sec artificial delay
-  // await new Promise(resolve => {
-  //   setTimeout(() => {
-  //     resolve(0)
-  //   }, 1000)
-  // })
 
   if (submission.status !== 'success') {
     return json(
@@ -51,8 +37,6 @@ export async function action({ request }: ActionFunctionArgs) {
       { status: submission.status === 'error' ? 400 : 200 },
     )
   } else {
-    console.log('Submission is valid', submission.value)
-    console.log('\n', `submission.status = `, submission.status, '\n')
     return json(
       {
         result: submission.reply({
@@ -80,11 +64,6 @@ export default function SimpleForm() {
       monkey: '',
     },
   })
-
-  console.log('\n', `actionData = `, actionData, '\n')
-  console.log('\n', `form = `, form, '\n')
-  console.log('\n', `form.status = `, form.status, '\n')
-  console.log('\n', `fields.monkey.errors = `, fields.monkey.errors, '\n')
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
