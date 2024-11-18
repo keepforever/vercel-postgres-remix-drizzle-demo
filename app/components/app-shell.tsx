@@ -8,9 +8,12 @@ import {
   FolderIcon,
   HomeIcon,
   XMarkIcon,
-  CubeIcon,
+  BuildingLibraryIcon,
   PuzzlePieceIcon,
   BeakerIcon,
+  ArrowTrendingDownIcon,
+  BellAlertIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline'
 import { NavLink, useMatches } from '@remix-run/react'
 
@@ -36,23 +39,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     {
       name: 'Defer Example',
       href: '/defer-example',
-      icon: FolderIcon,
+      icon: BuildingLibraryIcon,
     },
     {
       name: 'This route will crash the app',
       href: '/test-error',
-      icon: CubeIcon,
+      icon: ArrowTrendingDownIcon,
     },
     {
       name: 'Conform Zod Demo',
       href: '/conform-zod-demo',
-      icon: CubeIcon,
+      icon: BellAlertIcon,
     },
 
     {
       name: 'OpenAI',
       href: '/openai',
-      icon: CubeIcon,
+      icon: SparklesIcon,
     },
     // sign-up and sign-in routes
     ...(!rootData?.userId

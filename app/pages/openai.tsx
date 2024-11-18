@@ -1,7 +1,6 @@
 import { SignedIn } from '@clerk/remix'
 import { type MetaFunction, type LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { useEffect, useRef, useState } from 'react'
-import { useEventSource } from 'remix-utils/sse/react'
 import { ServerEventKey } from '~/constants'
 import { useAnimatedText } from '~/hooks/useAnimatedText'
 
@@ -114,22 +113,5 @@ export default function Index() {
         </div>
       </div>
     </div>
-  )
-}
-
-export function Counter() {
-  // Here `/sse/time` is the resource route returning an eventStream response
-  const time = useEventSource('/api/time', { event: ServerEventKey.Time })
-
-  if (!time) return null
-
-  return (
-    <time dateTime={time}>
-      {new Date(time).toLocaleTimeString('en', {
-        minute: '2-digit',
-        second: '2-digit',
-        hour: '2-digit',
-      })}
-    </time>
   )
 }
