@@ -56,7 +56,7 @@ export default function Index() {
       console.log(`📡 Connection #${connectionCountRef.current} established`)
     })
 
-    sse.addEventListener(ServerEventKey.Time, event => {
+    sse.addEventListener(ServerEventKey.OPEN_AI, event => {
       setResults(prevResults => prevResults + event.data)
     })
 

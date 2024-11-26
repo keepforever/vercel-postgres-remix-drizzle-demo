@@ -135,7 +135,7 @@ import { ServerEventKey } from '~/constants'
 
 export function Counter() {
   // Here `/sse/time` is the resource route returning an eventStream response
-  const time = useEventSource('/api/time', { event: ServerEventKey.Time })
+  const time = useEventSource('/api/time', { event: ServerEventKey.OPEN_AI })
 
   if (!time) return null
 

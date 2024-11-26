@@ -1,4 +1,4 @@
 export enum ServerEventKey {
-  Time = 'time',
+  OPEN_AI = 'openai',
   End = 'end',
 }

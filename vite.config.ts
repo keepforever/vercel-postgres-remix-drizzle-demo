@@ -18,7 +18,7 @@ export default defineConfig({
           route('test-error', 'pages/test-error.tsx')
           route('openai', 'pages/openai.tsx')
           route('api/users', 'api/users.tsx')
-          route('api/time', 'api/time.ts')
+          route('api/time', 'api/openai.ts')
           route('use-fetcher-example', 'pages/use-fetcher-example.tsx')
           route('sign-up', 'pages/sign-up.tsx')
           route('sign-in', 'pages/sign-in.tsx')

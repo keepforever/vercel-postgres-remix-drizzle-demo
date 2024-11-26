@@ -4,7 +4,7 @@ import OpenAI from 'openai'
 import { ServerEventKey } from '~/constants'
 
 const openai = new OpenAI()
-// time.ts
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const query = new URL(request.url).searchParams.get('query')
   const connectionId = Math.random().toString(36).slice(2, 9) // Generate unique ID for this connection
@@ -37,7 +37,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
             break
           }
           chunkCount++
-          send({ event: ServerEventKey.Time, data: chunk.choices[0]?.delta?.content || '' })
+          send({ event: ServerEventKey.OPEN_AI, data: chunk.choices[0]?.delta?.content || '' })
         }
 
         completed = true
